@@ -6,7 +6,7 @@ class ForoScrapper extends UcursosScrapper {
 
     private function getAuthorInfo($tmp_autor) {
         $autor = new stdClass();
-        $autor->nombre = trim(pq('a.usuario', $tmp_autor)->html());
+        $autor->nombre = trim(pq('a.usuario', $tmp_autor)->text());
         $autor->tipo = UcursosScrapper::toUserType(pq('img.icono', $tmp_autor)->attr('alt'), $this->default, $this->nan);
         $autor->avatar = pq('img.icono', $tmp_autor)->attr('src');
         return $autor;
@@ -14,7 +14,7 @@ class ForoScrapper extends UcursosScrapper {
 
     private function getPostContent($post) {
         $tmp_texto = pq(pq($post)->children('div.texto'))->html();
-        return substr($tmp_texto, strpos($tmp_texto, '>')+1, strpos($tmp_texto, '<ul id="opciones') - strpos($tmp_texto, '>')-1);
+        return mb_convert_encoding(substr($tmp_texto, strpos($tmp_texto, '>')+1, strpos($tmp_texto, '<ul id="opciones') - strpos($tmp_texto, '>')-1) , 'UTF-8');
     }
 
     private function getPostInfo($post) {

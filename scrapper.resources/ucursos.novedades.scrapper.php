@@ -2,7 +2,7 @@
 class NovedadesScrapper extends UcursosScrapper {
     var $novedades;
 
-    function getNovedades($url) {
+    function getNovedades() {
         if($this->novedades != null) return $this->novedades;
         parent::process();
 
@@ -17,15 +17,15 @@ class NovedadesScrapper extends UcursosScrapper {
             foreach(pq('a', $novedad->texto) as $href) {
                 $href_url = pq($href)->attr('href');
                 if(substr($href_url, 0, 2) == 'r/')
-                    pq($href)->attr('href', $url . $href_url);
+                    pq($href)->attr('href', $this->url . $href_url);
             }
             foreach(pq('img', $novedad->texto) as $href) {
                 $img_src = pq($href)->attr('src');
                 if(substr($img_src, 0, 2) == 'r/')
-                    pq($href)->attr('src', $url . $img_src);
+                    pq($href)->attr('src', $this->url . $img_src);
             }
 
-            $novedad->texto = pq($novedad->texto)->html();
+            $novedad->texto = mb_convert_encoding(pq($novedad->texto)->html(), 'UTF-8');
             $novedad->titulo = trim(pq(pq($item)->children('h1'))->text());
             $novedad->fecha = trim(substr($tmp_autor, $tmp_autor_f));
             $novedad->autor = new stdClass();

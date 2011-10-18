@@ -59,7 +59,7 @@ class UcursosScrapper {
             return false;
         }
 
-        $this->content = mb_convert_encoding($this->content, $output_format, $this->charset);
+       // $this->content = mb_convert_encoding($this->content, $output_format, $this->charset);
 
         return true;
     }
@@ -75,7 +75,7 @@ class UcursosScrapper {
     function getSeccion() {
         if ($this->nombre_seccion != null) return $this->nombre_seccion;
         $this->process();
-        $this->nombre_seccion = pq('h2.ucursos')->html();
+        $this->nombre_seccion = pq('h2.ucursos')->text();
         return $this->nombre_seccion;
     }
 
@@ -98,6 +98,7 @@ class UcursosScrapper {
 
 }
 
+require('scrapper.resources/ucursos.cursos.scrapper.php');
 require('scrapper.resources/ucursos.foro.scrapper.php');
 require('scrapper.resources/ucursos.home.scrapper.php');
 require('scrapper.resources/ucursos.horario.scrapper.php');

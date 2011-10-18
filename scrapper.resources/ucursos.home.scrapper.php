@@ -14,7 +14,7 @@ class HomeScrapper extends UcursosScrapper {
         parent::process();
 
         $this->user = array();
-        $this->user['name'] = pq('#usuario h1 a')->html();
+        $this->user['name'] = pq('#usuario h1 a')->text();
         $tmp_url = pq('#usuario li:nth-child(2) a')->attr('href');
         $this->user['url'] = substr($tmp_url, 0, strrpos($tmp_url, '/', -2)+1);
 
@@ -60,7 +60,7 @@ class HomeScrapper extends UcursosScrapper {
         foreach(pq('div#'.$id.' > ul > li') as $item) {
             $element = new stdClass();
             $element->tipo = UcursosScrapper::toAscii((pq('img', $item)->attr('alt')));
-            $element->nombre = pq('a > span:first', $item)->html();
+            $element->nombre = pq('a > span:first', $item)->text();
             $element->url = substr(pq('a', $item)->attr('href'), strlen('https://www.u-cursos.cl'));
             $element->nuevos = array();
             foreach(pq('div.nuevo > a', $item) as $new_item) {
